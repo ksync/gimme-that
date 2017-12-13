@@ -33,22 +33,29 @@ function jsonVal {
 }
 
 # Check GitHub for the latest release
+echo -e "${BLUE}Checking GitHub for the latest release of ${YELLOW}${TARGET_BIN}${NC}"
 URI=${GITHUB_API}/repos/${TARGET_GITHUB_USER}/${TARGET_GITHUB_REPO}/releases/latest
 RELEASE_RESPONSE=$(curl -L -S -s ${URI})
 
 # Parse release info
 RELEASE_TAG=$(jsonVal "${RELEASE_RESPONSE}" "tag_name")
 # TODO: Make this more flexible
+echo -e "${BLUE}Found release tag: ${YELLOW}${RELEASE_TAG}${NC}"
 TARGET_STRING=${TARGET_BIN}-${RELEASE_TAG}-${HOST_OS}-${HOST_ARCH}
 # echo -e $TARGET_STRING
 # TODO: Ditto. This makes me uber sad.
+echo -e "${BLUE}Downloading ${YELLOW}${TARGET_STRING}${NC}"
 DOWNLOAD_URL="https://github.com/"${TARGET_GITHUB_USER}"/"${TARGET_GITHUB_REPO}"/releases/download/"${RELEASE_TAG}"/"${TARGET_STRING}
 # echo -e $DOWNLOAD_URL
 
 # Check if we have this already
 if ! command -v ${TARGET_BIN}; then
+  echo -e "${RED}No previous install found. Installing ${YELLOW}${TARGET_BIN}${NC}${RED} to ${TARGET_INSTALL_PATH}/${TARGET_BIN}${NC}"
   curl -s -S -L ${DOWNLOAD_URL} -o ${TARGET_INSTALL_PATH}/${TARGET_BIN}
   chmod +x ${TARGET_INSTALL_PATH}/${TARGET_BIN}
-# else
-  # TODO: Do some version checking here. Hash?
+# TODO: Do some version checking here. Hash?
+elif curl -s -S -L -z ${TARGET_INSTALL_PATH}/${TARGET_BIN} ${DOWNLOAD_URL} -o ${TARGET_INSTALL_PATH}/${TARGET_BIN} ; then
+  echo -e "${RED}Newer binary found! Installing ${YELLOW}${TARGET_BIN}${NC}${RED} to ${TARGET_INSTALL_PATH}/${TARGET_BIN}${NC}"
+  chmod +x ${TARGET_INSTALL_PATH}/${TARGET_BIN}
 fi
+echo -e "${GREEN}No newer version found. Leaving ${YELLOW}${TARGET_INSTALL_PATH}/${TARGET_BIN}${NC}${NC}"
