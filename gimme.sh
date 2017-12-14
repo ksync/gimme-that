@@ -25,12 +25,9 @@ else
   HOST_ARCH=${HOST_ARCH:-$(uname -m)}
 fi
 
-# Check for root permission (needed for /usr/local/bin/ access)
-# TODO: Do a real check here to see if we have permission for the path
-if [ "$EUID" -ne 0 ] ; then
-  echo -e "${RED}Root access is required to install to ${YELLOW}${TARGET_INSTALL_PATH}${NC}"
-  exit 1
-fi
+# Check for root permission
+touch ${TARGET_INSTALL_PATH}/.gimme &> /dev/null || (echo -e "${RED}Root access is required to install to ${YELLOW}${TARGET_INSTALL_PATH}${NC}" && exit 1)
+rm ${TARGET_INSTALL_PATH}/.gimme
 
 # Basic JSON matching
 # TODO: Clean this up
