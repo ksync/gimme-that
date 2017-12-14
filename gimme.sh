@@ -15,7 +15,9 @@ NC='\033[0m'
 TARGET_BIN=${TARGET_BIN:-"confd"}
 # TODO: Make this dynamic
 GITHUB_API=${GITHUB_API:-"https://api.github.com"}
-TARGET_PROJECT=${TARGET_PROJECT:-"vapor-ware/ksync"}
+TARGET_GITHUB_USER=${TARGET_GITHUB_USER:-"vapor-ware"}
+TARGET_GITHUB_REPO=${TARGET_GITHUB_REPO:-"ksync"}
+TARGET_PROJECT=${TARGET_PROJECT:-$TARGET_GITHUB_USER/$TARGET_GITHUB_REPO}
 TARGET_INSTALL_PATH=${TARGET_INSTALL_PATH:-"/usr/local/bin"}
 HOST_OS=${HOST_OS:-$(uname | tr '[:upper:]' '[:lower:]')}
 if [[ $(uname -m) == "x86_64" ]]; then
@@ -29,7 +31,7 @@ touch ${TARGET_INSTALL_PATH}/.gimme &> /dev/null || (echo -e "${RED}Root access 
 rm ${TARGET_INSTALL_PATH}/.gimme
 
 # Basic JSON matching
-# TODO: Clean this up
+# TODO: Clean this up for god's sake!
 function jsonVal {
     temp=`echo $1 | sed 's/\\\\\//\//g' | sed 's/[{}]//g' | awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | sed 's/\"\:\"/\|/g' | sed 's/[\,]/ /g' | sed 's/\"//g' | grep -w $2 | sed 's|.*\:\(.*\)|\1|'`
     echo ${temp##*|}
