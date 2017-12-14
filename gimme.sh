@@ -15,8 +15,7 @@ NC='\033[0m'
 TARGET_BIN=${TARGET_BIN:-"confd"}
 # TODO: Make this dynamic
 GITHUB_API=${GITHUB_API:-"https://api.github.com"}
-TARGET_GITHUB_USER=${TARGET_GITHUB_USER:-"kelseyhightower"}
-TARGET_GITHUB_REPO=${TARGET_GITHUB_REPO:-"confd"}
+TARGET_PROJECT=${TARGET_PROJECT:-"vapor-ware/ksync"}
 TARGET_INSTALL_PATH=${TARGET_INSTALL_PATH:-"/usr/local/bin"}
 HOST_OS=${HOST_OS:-$(uname | tr '[:upper:]' '[:lower:]')}
 if [[ $(uname -m) == "x86_64" ]]; then
@@ -38,18 +37,18 @@ function jsonVal {
 
 # Check GitHub for the latest release
 echo -e "${BLUE}Checking GitHub for the latest release of ${YELLOW}${TARGET_BIN}${NC}"
-URI=${GITHUB_API}/repos/${TARGET_GITHUB_USER}/${TARGET_GITHUB_REPO}/releases/latest
+URI=${GITHUB_API}/repos/${TARGET_PROJECT}/releases/latest
 RELEASE_RESPONSE=$(curl -L -S -s ${URI})
 
 # Parse release info
 RELEASE_TAG=$(jsonVal "${RELEASE_RESPONSE}" "tag_name")
 # TODO: Make this more flexible
 echo -e "${BLUE}Found release tag: ${YELLOW}${RELEASE_TAG}${NC}"
-TARGET_STRING=${TARGET_BIN}-${RELEASE_TAG}-${HOST_OS}-${HOST_ARCH}
+TARGET_STRING=${TARGET_BIN}_${HOST_OS}_${HOST_ARCH}
 # echo -e $TARGET_STRING
 # TODO: Ditto. This makes me uber sad.
 echo -e "${BLUE}Downloading ${YELLOW}${TARGET_STRING}${NC}"
-DOWNLOAD_URL="https://github.com/"${TARGET_GITHUB_USER}"/"${TARGET_GITHUB_REPO}"/releases/download/"${RELEASE_TAG}"/"${TARGET_STRING}
+DOWNLOAD_URL="https://github.com/"${TARGET_PROJECT}"/releases/download/"${RELEASE_TAG}"/"${TARGET_STRING}
 # echo -e $DOWNLOAD_URL
 
 # Check if we have this already
