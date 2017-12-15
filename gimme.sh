@@ -12,7 +12,7 @@ YELLOW='\033[0;33m'
 NC='\033[0m'
 
 # Storage for constants
-TARGET_BIN=${TARGET_BIN:-"confd"}
+TARGET_BIN=${TARGET_BIN:-"ksync"}
 # TODO: Make this dynamic
 GITHUB_API=${GITHUB_API:-"https://api.github.com"}
 TARGET_GITHUB_USER=${TARGET_GITHUB_USER:-"vapor-ware"}
