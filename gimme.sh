@@ -63,5 +63,6 @@ elif curl -s -S -L -z ${TARGET_INSTALL_PATH}/${TARGET_BIN} ${DOWNLOAD_URL} -o ${
   echo -e "${RED}Newer binary found! Installing ${YELLOW}${TARGET_BIN}${NC}${RED} to ${TARGET_INSTALL_PATH}/${TARGET_BIN}${NC}"
   chmod +x ${TARGET_INSTALL_PATH}/${TARGET_BIN}
   exit 0
+else
+  echo -e "${GREEN}No newer version found. Leaving ${YELLOW}${TARGET_INSTALL_PATH}/${TARGET_BIN}${NC}${NC}"
 fi
-echo -e "${GREEN}No newer version found. Leaving ${YELLOW}${TARGET_INSTALL_PATH}/${TARGET_BIN}${NC}${NC}"
