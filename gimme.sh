@@ -56,10 +56,10 @@ DOWNLOAD_URL="https://github.com/"${TARGET_PROJECT}"/releases/download/"${RELEAS
 # Check if we have this already
 if ! command -v ${TARGET_BIN}; then
   echo -e "${RED}No previous install found. Installing ${YELLOW}${TARGET_BIN}${NC}${RED} to ${TARGET_INSTALL_PATH}/${TARGET_BIN}${NC}"
-  curl -s -S -L ${DOWNLOAD_URL} -o ${TARGET_INSTALL_PATH}/${TARGET_BIN}
+  curl -s -S -f -L ${DOWNLOAD_URL} -o ${TARGET_INSTALL_PATH}/${TARGET_BIN}
   chmod +x ${TARGET_INSTALL_PATH}/${TARGET_BIN}
 # TODO: Do some version checking here. Hash?
-elif curl -s -S -L -z ${TARGET_INSTALL_PATH}/${TARGET_BIN} ${DOWNLOAD_URL} -o ${TARGET_INSTALL_PATH}/${TARGET_BIN} ; then
+elif curl -s -S -f -L -z ${TARGET_INSTALL_PATH}/${TARGET_BIN} ${DOWNLOAD_URL} -o ${TARGET_INSTALL_PATH}/${TARGET_BIN} ; then
   echo -e "${RED}Newer binary found! Installing ${YELLOW}${TARGET_BIN}${NC}${RED} to ${TARGET_INSTALL_PATH}/${TARGET_BIN}${NC}"
   chmod +x ${TARGET_INSTALL_PATH}/${TARGET_BIN}
   exit 0
